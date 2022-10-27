@@ -21,11 +21,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey("d"))
         {
-            rb.AddForce(GetForceWithDelta(sidewaysForce), 0, 0);
+            rb.AddForce(GetForceWithDelta(sidewaysForce), 0, 0, ForceMode.VelocityChange);
         }
         if (Input.GetKey("a"))
         {
-            rb.AddForce(GetForceWithDelta(-sidewaysForce), 0, 0);
+            rb.AddForce(GetForceWithDelta(-sidewaysForce), 0, 0, ForceMode.VelocityChange);
         }
     }
 
