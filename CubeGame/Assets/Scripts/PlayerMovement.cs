@@ -27,6 +27,11 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(GetForceWithDelta(-sidewaysForce), 0, 0, ForceMode.VelocityChange);
         }
+
+        if(rb.position.y < -1)
+        {
+            FindObjectOfType<GameManager>().EndGame();
+        }
     }
 
     private float GetForceWithDelta(float initialForce) => initialForce * Time.deltaTime;
