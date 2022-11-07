@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rb;
     private Animator _animator;
     private SpriteRenderer _spriteRenderer;
+    private BoxCollider2D _boxCollider;
+
+    [SerializeField] private LayerMask _jumpableGround;
 
     [SerializeField] float moveSpeed = 7f;
     [SerializeField] float jumpSpeed = 10f;
@@ -33,19 +36,19 @@ public class PlayerMovement : MonoBehaviour
         _dirX = Input.GetAxisRaw("Horizontal");
         _rb.velocity = new Vector2(_dirX * moveSpeed, _rb.velocity.y);
 
-        if (Input.GetButtonDown("Jump") && !_isInJump)
+        if (Input.GetButtonDown("Jump") && IsGrounded() /*!_isInJump*/)
         {
             _rb.velocity = new Vector2(_rb.velocity.x, jumpSpeed);
-            _isInJump = true;
+            //_isInJump = true;
         }
 
         UpdateAnimationsState();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        _isInJump = false;
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    _isInJump = false;
+    //}
 
     private void UpdateAnimationsState()
     {
@@ -86,11 +89,17 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetInteger("movementState", (int)movementState);
     }
 
+    private bool IsGrounded()
+    {
+        return Physics2D.BoxCast(_boxCollider.bounds.center, _boxCollider.bounds.size, 0f, Vector2.down, .1f, _jumpableGround);
+    }
+
     private void Init()
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _boxCollider = GetComponent<BoxCollider2D>();
         _isInJump = false;
     }
 }
